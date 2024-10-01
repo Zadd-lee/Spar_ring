@@ -32,11 +32,48 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background-color  ease;
 }
 .right >button:hover{
   background-color: burlywood;
 }
-.img1{
-  size:10px;
+.team-img{
+  margin-top: 100px ;
+  margin-left: 100px;
+  width: 600px;
+  height: 500px;
+  border-radius: 50px;
+  padding-right: 20px ;
+}
+
+
+.team-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+
+  
+}
+.team-left{
+  flex:1;
+  margin-bottom: 50px;
+}
+.team-right{
+  flex:1;
+  padding-left: 30px;
+}
+.team-des{
+  font-size: 18px;
+  margin-left: 1px;
+  margin-bottom: 20px;
+  color: white;
+}
+.team-goal{
+  font-size: 18px;
+  color: white;
+
+}
+.team-h1{
+  color: white;
 }
