@@ -1,0 +1,39 @@
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: silver;
+  padding: 10px 20px;
+  color: white;
+}
+
+.left{
+  display: flex;
+  align-items: center;
+}
+.logo{
+  width: 40px;
+  height: 40px;
+  margin-left: 50px;
+  margin-right: 10px;
+}
+.team{
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 20px;
+  color: black;
+}
+.right >button{
+  background-color: black;
+  color: black;
+
+  padding: 10px 15px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.right >button:hover{
+  background-color: burlywood;
+}
