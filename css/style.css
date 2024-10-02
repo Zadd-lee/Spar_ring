@@ -24,7 +24,7 @@
   color: black;
 }
 .right >button{
-  background-color: black;
+  background-color: silver;
   color: black;
 
   padding: 10px 15px;
@@ -35,7 +35,8 @@
   transition: background-color  ease;
 }
 .right >button:hover{
-  background-color: burlywood;
+  background-color: silver;
+  color: white;
 }
 .team-img{
   margin-top: 100px ;
