@@ -221,3 +221,9 @@
 .team-h1{
   color: white;
 }
+#mbti_input{
+  float: right;
+  border-radius: 25px;
+  border: 2px solid black;
+  height: 30px;
+}
