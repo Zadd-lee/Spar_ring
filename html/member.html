@@ -8,13 +8,25 @@
   <link rel="stylesheet" href="../css/style.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    body {
+      font-family: 'Jua', sans-serif;
+    }
     .card {
-      height: 450px; /* 카드 전체 높이 증가 */
+      height: 400px; /* 카드 전체 높이 조정 */
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative; /* 삭제 버튼 위치 지정을 위해 추가 */
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
     .card-img-top {
       width: 100%;
-      height: 350px; /* 사진 높이 증가 */
+      height: 300px; /* 사진 높이 조정 */
       object-fit: cover;
     }
     .card-body {
@@ -22,12 +34,304 @@
       overflow: hidden;
     }
     #member-cards {
-      margin-top: 80px; /* navbar 아래 여백 추가 */
+      margin-top: 80px; /* navbar 아래 여백 유지 */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-    /* 부트스트랩 버튼 스타일 재정의 */
-    .btn-danger {
-      background-color: #dc3545;
-      border-color: #dc3545;
+    .col-custom {
+      flex: 0 0 20%; /* 한 줄에 5개 카드가 들어가도록 설정 */
+      max-width: 20%;
+      padding: 0 10px; /* 카드 사이 간격 조정 */
+      margin-bottom: 20px; /* 카드 아래 여백 추가 */
+    }
+    @media (max-width: 1200px) {
+      .col-custom {
+        flex: 0 0 25%;
+        max-width: 25%;
+      }
+    }
+    @media (max-width: 992px) {
+      .col-custom {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+      }
+    }
+    @media (max-width: 768px) {
+      .col-custom {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+    @media (max-width: 576px) {
+      .col-custom {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 2% auto;
+      padding: 30px 200px; /* 좌우 패딩을 4배로 증가 (50px * 4 = 200px) */
+      border: 1px solid #888;
+      width: 98%;
+      max-width: 1600px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      height: 600px;
+      position: relative; /* 아이콘 배치를 위해 추가 */
+    }
+    .modal-image {
+      flex: 0 0 20%;
+      margin-right: 240px; /* 이미지와 상세 정보 사이 간격을 4배로 증가 (60px * 4 = 240px) */
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .modal-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0; /* 좌우 패딩 제거, 상하 패딩만 유지 */
+      height: 100%;
+      overflow-y: auto;
+    }
+    .modal-row {
+      display: flex;
+      margin-bottom: 30px; /* 행 간 간격 유지 */
+      align-items: flex-start;
+    }
+    .modal-label {
+      font-weight: bold;
+      color: #333;
+      width: 150px; /* 레이블 너비 유지 */
+      margin-right: 200px; /* 레이블과 값 사이의 간격을 200px로 설정 */
+      font-size: 18px; /* 글자 크기 유지 */
+    }
+    .modal-value {
+      color: #666;
+      flex: 1;
+      font-size: 16px; /* 글자 크기 유지 */
+      line-height: 1.5; /* 줄 간격 유지 */
+    }
+    .modal-header {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .icon-button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease;
+    }
+    .icon-button:hover {
+      color: #333;
+    }
+    .social-icons {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .social-icons a {
+      font-size: 24px;
+      color: #333;
+      text-decoration: none;
+    }
+    .social-icons a:hover {
+      color: #4CAF50;
+    }
+    #editModal .modal-content {
+      width: 50%;
+      max-width: 500px;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="file"] {
+      width: 100%;
+      padding: 5px;
+    }
+    .enroll {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 750px; 
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      
+    }
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 30px;
+      padding-bottom: 20px; 
+    }
+    .input_btn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      min-width: 100px;
+      height: 40px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+    }
+    .input_btn:hover {
+      background-color: #45a049;
+    }
+    #edit_cancel {
+      background-color: #f44336;
+    }
+    #edit_cancel:hover {
+      background-color: #d32f2f;
+    }
+    #edit_imagebox {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      overflow: hidden;
+    }
+    #edit_profile {
+      margin-top: 10px;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #ff4444;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.3s ease;
+    }
+    .delete-btn:hover {
+      color: #cc0000;
+    }
+    #edit_mbti {
+      width: 100%;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .info {
+      display: flex;
+      align-items: flex-start; /* 상단 정렬로 변경 */
+      margin-bottom: 15px;
+    }
+    .info label {
+      width: 120px;
+      margin-right: 10px;
+    }
+    .info input[type="text"],
+    .info input[type="file"],
+    .info select,
+    .info_radio {
+      flex: 1;
+      width: calc(100% - 130px);
+      padding: 5px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .info_radio {
+      display: flex;
+      align-items: center;
+      border: none;
+      padding: 0;
+    }
+    .info_radio input[type="radio"] {
+      margin-right: 5px;
+    }
+    .info_radio label {
+      width: auto;
+      margin-right: 15px;
+    }
+    .profile-image {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    #edit_imagebox {
+      width: 150px;
+      height: 150px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      overflow: hidden;
+    }
+    #edit_profile {
+      width: 100%;
+      margin-top: 5px;
+    }
+    .button-group {
+      margin-top: 15px;
+    }
+    .input_btn {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #edit_submit {
+      background-color: #4CAF50;
+      color: white;
+    }
+    #edit_cancel {
+      background-color: #f44336;
+      color: white;
     }
   </style>
 </head>
@@ -36,22 +340,103 @@
 
   <nav class="navbar">
     <div class="left">
-        <img
-        src="data:image/jpeg;base64,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"
-        class="logo">
+      <img
+      src="../img/sparta.jpg"
+      class="logo">
       <span class="team">Sparing</span>
     </div>
     <div class="right">
         <button class="btn" onClick="location.href='home.html'">Home</button>
         <button class="btn" onClick="location.href='member.html'">Member</button>
         <button class="btn" onClick="location.href='news.html'">News</button>
-
     </div>
   </nav>
 
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="member-cards">
+  <div class="container-fluid"> 
+    <div class="row" id="member-cards">
       <!--자바스크립트로 카드 동적으로 할당-->
+    </div>
+  </div>
+
+  <!-- 모달 팝업 -->
+  <div id="memberModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button id="editButton" class="icon-button"><i class="fas fa-pencil-alt"></i></button>
+        <button class="icon-button close"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-image">
+        <img id="memberImage" src="" alt="팀원 사진">
+      </div>
+      <div class="modal-details" id="memberDetails"></div>
+    </div>
+  </div>
+
+  <!-- 수정 팝업 -->
+  <div id="editModal" class="enroll">
+    <div class="info">
+      <label for="edit_name">이름: </label>
+      <input type="text" id="edit_name" name="name" required>
+    </div>
+    <div class="info">
+      <label for="edit_mbti">MBTI: </label>
+      <select id="edit_mbti" name="mbti" required>
+        <option value="">선택하세요</option>
+        <option value="ISTJ">ISTJ</option>
+        <option value="ISTP">ISTP</option>
+        <option value="ISFJ">ISFJ</option>
+        <option value="ISFP">ISFP</option>
+        <option value="INTJ">INTJ</option>
+        <option value="INTP">INTP</option>
+        <option value="INFJ">INFJ</option>
+        <option value="INFP">INFP</option>
+        <option value="ESTJ">ESTJ</option>
+        <option value="ESTP">ESTP</option>
+        <option value="ESFJ">ESFJ</option>
+        <option value="ESFP">ESFP</option>
+        <option value="ENTJ">ENTJ</option>
+        <option value="ENTP">ENTP</option>
+        <option value="ENFJ">ENFJ</option>
+        <option value="ENFP">ENFP</option>
+      </select>
+    </div>
+    <div class="info">
+      <label for="edit_merit">장점: </label>
+      <input type="text" id="edit_merit" name="merit" required>
+    </div>
+    <div class="info">
+      <label>협업 스타일: </label>
+      <div class="info_radio">
+        <input type="radio" id="edit_leader" name="style" value="leader" required>
+        <label for="edit_leader">Leader</label>
+        <input type="radio" id="edit_follower" name="style" value="follower">
+        <label for="edit_follower">Follower</label>
+      </div>
+    </div>
+    <div class="info">
+      <label for="edit_favorite">좋아하는 것: </label>
+      <input type="text" id="edit_favorite" name="favorite" required>
+    </div>
+    <div class="info">
+      <label for="edit_git">깃헙 주소: </label>
+      <input type="text" id="edit_git" name="git">
+    </div>
+    <div class="info">
+      <label for="edit_blog">블로그 주소: </label>
+      <input type="text" id="edit_blog" name="blog">
+    </div>
+    <div class="info profile-image">
+      <label for="edit_profile">프로필 이미지: </label>
+    </div>
+    <div id="edit_imagebox">
+      <!-- 현재 이미지가 여기에 표시 -->
+    </div>
+    <div class="info profile-image">
+      <input type="file" id="edit_profile" name="profile" accept="image/*" onchange="loadEditFile(this)">
+    </div>
+    <div class="button-group">
+      <button class="input_btn" id="edit_submit">수정 완료</button>
+      <button class="input_btn" id="edit_cancel">취소</button>
     </div>
   </div>
 
@@ -75,86 +460,244 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    const defaultImagePath = 'test.jpg';
+    const defaultImagePath = 'images/test.jpg'; // 기본 이미지 경로 
 
-    // 팀원 카드 생성 및 표시 함수
+    // 팀원 카드 생성 및 표시 함수 
     function createMemberCard(member) {
-        const col = document.createElement('div');
-        col.className = 'col';
-        col.innerHTML = `
-            <div class="card h-100">
-                <img src="${member.photoUrl}" class="card-img-top" alt="${member.name}" onerror="this.onerror=null; this.src='${getDefaultImageUrl()}'">
-                <div class="card-body">
-                    <h5 class="card-title">${member.name}</h5>
-                    <p class="card-text">MBTI: ${member.mbti}</p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-danger btn-sm" onclick="deleteMember('${member.id}')">삭제</button>
-                </div>
+      const col = document.createElement('div');
+      col.className = 'col-custom';
+      col.innerHTML = `
+        <div class="card h-100">
+          <button class="delete-btn" onclick="event.stopPropagation(); deleteMember('${member.id}')">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <div onclick="showMemberDetails('${member.id}')">
+            <img src="${member.profile}" class="card-img-top" alt="${member.name}" onerror="this.onerror=null; this.src='${getDefaultImageUrl()}'">
+            <div class="card-body">
+              <h5 class="card-title">${member.name}</h5>
+              <p class="card-text">MBTI: ${member.mbti}</p>
             </div>
-        `;
-        document.getElementById('member-cards').appendChild(col);
+          </div>
+        </div>
+      `;
+      document.getElementById('member-cards').appendChild(col);
     }
 
     // 기본 이미지 URL 가져오기
     function getDefaultImageUrl() {
-        return storage.ref(defaultImagePath).getDownloadURL()
-            .then(url => url)
-            .catch(error => {
-                console.error("기본 이미지 URL 가져오기 실패:", error);
-                return ''; // 또는 로컬 경로의 기본 이미지
-            });
+        return defaultImagePath; // 기본 이미지 경로 설정
     }
 
-    // 팀원 데이터 가져오기 및 카드 생성
+    // 팀원 데이터 가져오기 및 카드 생성 함수
     function loadMembers() {
-        db.collection("members").get().then((querySnapshot) => {
-            if (querySnapshot.empty) {
-                document.getElementById('member-cards').innerHTML = '<p class="text-center">등록된 팀원이 없습니다.</p>';
-            } else {
-                querySnapshot.forEach((doc) => {
-                    const member = doc.data();
-                    member.id = doc.id;
-                    if (member.photoPath) {
-                        storage.ref(member.photoPath).getDownloadURL().then((url) => {
-                            member.photoUrl = url;
-                            createMemberCard(member);
-                        }).catch((error) => {
-                            console.error("사진 URL 가져오기 실패:", error);
-                            getDefaultImageUrl().then(defaultUrl => {
-                                member.photoUrl = defaultUrl;
-                                createMemberCard(member);
-                            });
-                        });
-                    } else {
-                        getDefaultImageUrl().then(defaultUrl => {
-                            member.photoUrl = defaultUrl;
-                            createMemberCard(member);
-                        });
-                    }
-                });
-            }
-        }).catch((error) => {
-            console.error("팀원 데이터 로딩 실패:", error);
-            document.getElementById('member-cards').innerHTML = '<p class="text-center text-danger">데이터 로딩 중 오류가 발생했습니다.</p>';
-        });
+      db.collection("member").get().then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          document.getElementById('member-cards').innerHTML = '<p class="text-center">등록된 팀원이 없습니다.</p>';
+        } else {
+          document.getElementById('member-cards').innerHTML = ''; // 기존 카드 초기화
+          querySnapshot.forEach((doc) => {
+            const member = doc.data();
+            member.id = doc.id;
+            createMemberCard(member);
+          });
+        }
+      }).catch((error) => {
+        console.error("팀원 데이터 로딩 실패:", error);
+        document.getElementById('member-cards').innerHTML = '<p class="text-center text-danger">데이터 로딩 중 오류가 발생했습니다.</p>';
+      });
     }
 
-    // 팀원 삭제 함수
+    // 팀원 삭제 함수 
     function deleteMember(memberId) {
-        if (confirm('정말로 이 팀원을 삭제하시겠습니까?')) {
-            db.collection("members").doc(memberId).delete().then(() => {
-                console.log("팀원이 성공적으로 삭제되었습니다.");
-                // 페이지 새로고침
-                location.reload();
-            }).catch((error) => {
-                console.error("팀원 삭제 중 오류 발생:", error);
-            });
+      if (confirm('정말로 이 팀원을 삭제하시겠습니까?')) {
+        db.collection("member").doc(memberId).delete().then(() => {
+          console.log("팀원이 성공적으로 삭제되었습니다.");
+          alert('팀원이 성공적으로 삭제되었습니다.'); // 삭제 완료 알림 추가
+          loadMembers(); // 목록 새로고침
+        }).catch((error) => {
+          console.error("팀원 삭제 중 오류 발생:", error);
+          alert('팀원 삭제 중 오류가 발생했습니다.'); // 오류 발생 시 알림 추가
+        });
+      }
+    }
+
+    // 팀원 상세 정보 표시 함수 
+    function showMemberDetails(memberId) {
+      currentMemberId = memberId;
+      db.collection("member").doc(memberId).get().then((doc) => {
+        if (doc.exists) {
+          const member = doc.data();
+          document.getElementById('memberImage').src = member.profile;
+          const detailsHtml = `
+            <div class="modal-row">
+              <div class="modal-label">이름</div>
+              <div class="modal-value">${member.name}</div>
+            </div>
+            <div class="modal-row">
+              <div class="modal-label">MBTI</div>
+              <div class="modal-value">${member.mbti}</div>
+            </div>
+            <div class="modal-row">
+              <div class="modal-label">장점</div>
+              <div class="modal-value">${member.merit}</div>
+            </div>
+            <div class="modal-row">
+              <div class="modal-label">협업 스타일</div>
+              <div class="modal-value">${member.style}</div>
+            </div>
+            <div class="modal-row">
+              <div class="modal-label">좋아하는 것</div>
+              <div class="modal-value">${member.favorite}</div>
+            </div>
+          `;
+          document.getElementById('memberDetails').innerHTML = detailsHtml;
+          
+          // GitHub와 블로그 아이콘 추가
+          const socialIconsHtml = `
+            <div class="social-icons">
+              ${member.git ? `<a href="${member.git}" target="_blank"><i class="fab fa-github"></i></a>` : ''}
+              ${member.blog ? `<a href="${member.blog}" target="_blank"><i class="fas fa-blog"></i></a>` : ''}
+            </div>
+          `;
+          document.querySelector('.modal-content').insertAdjacentHTML('beforeend', socialIconsHtml);
+          
+          document.getElementById('memberModal').style.display = 'block';
+        } else {
+          console.log("해당 멤버를 찾을 수 없습니다.");
         }
+      }).catch((error) => {
+        console.log("멤버 정보 가져오기 오류:", error);
+      });
+    }
+
+    // 모달 닫기
+    const modal = document.getElementById('memberModal');
+    const closeBtn = modal.querySelector('.close');
+    if (closeBtn) {
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+      }
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
 
     // 페이지 로드 시 팀원 데이터 불러오기
     window.onload = loadMembers;
+
+    let currentMemberId = null;
+
+    // 수정 버튼 클릭 이벤트
+    document.getElementById('editButton').addEventListener('click', function() {
+      document.getElementById('memberModal').style.display = 'none';
+      showEditForm(currentMemberId);
+    });
+
+    // 수정 폼 표시 함수
+    function showEditForm(memberId) {
+      db.collection("member").doc(memberId).get().then((doc) => {
+        if (doc.exists) {
+          const member = doc.data();
+          document.getElementById('edit_name').value = member.name;
+          document.getElementById('edit_mbti').value = member.mbti;
+          document.getElementById(member.style === 'leader' ? 'edit_leader' : 'edit_follower').checked = true;
+          document.getElementById('edit_favorite').value = member.favorite;
+          document.getElementById('edit_git').value = member.git || '';
+          document.getElementById('edit_blog').value = member.blog || '';
+          
+          // 현재 이미지 표시
+          let currentImage = document.createElement("img");
+          currentImage.src = member.profile;
+          currentImage.style.width = "100%";
+          currentImage.style.height = "100%";
+          currentImage.style.objectFit = "cover";
+          currentImage.style.borderRadius = "25px";
+          
+          let container = document.getElementById('edit_imagebox');
+          container.innerHTML = ''; // 기존 내용 제거
+          container.appendChild(currentImage);
+          
+          document.getElementById('editModal').style.display = 'block';
+          document.body.style.backgroundColor = "rgba(0,0,0,.5)";
+        }
+      });
+    }
+
+    // 수정 취소 버튼 이벤트
+    document.getElementById('edit_cancel').addEventListener('click', function() {
+      document.getElementById('editModal').style.display = 'none';
+      document.body.style.backgroundColor = "white";
+    });
+
+    // 수정 완료 버튼 이벤트
+    document.getElementById('edit_submit').addEventListener('click', function(e) {
+      e.preventDefault();
+      updateMember(currentMemberId);
+    });
+
+    // 멤버 정보 업데이트 함수
+    async function updateMember(memberId) {
+      const name = document.getElementById('edit_name').value;
+      const mbti = document.getElementById('edit_mbti').value;
+      const merit = document.getElementById('edit_merit').value;
+      const style = document.querySelector('input[name="style"]:checked').value;
+      const favorite = document.getElementById('edit_favorite').value;
+      const git = document.getElementById('edit_git').value;
+      const blog = document.getElementById('edit_blog').value;
+      const profileFile = document.getElementById('edit_profile').files[0];
+
+      let updateData = {
+        name: name,
+        mbti: mbti,
+        merit: merit,
+        style: style,
+        favorite: favorite,
+        git: git,
+        blog: blog
+      };
+
+      if (profileFile) {
+        const storageRef = storage.ref(`images/${profileFile.name}`);
+        await storageRef.put(profileFile);
+        const downloadURL = await storageRef.getDownloadURL();
+        updateData.profile = downloadURL;
+      }
+
+      db.collection("member").doc(memberId).update(updateData)
+        .then(() => {
+          console.log("멤버 정보가 성공적으로 업데이트되었습니다.");
+          document.getElementById('editModal').style.display = 'none';
+          document.body.style.backgroundColor = "white";
+          showMemberDetails(memberId);
+          loadMembers(); // 목록 새로고침
+        })
+        .catch((error) => {
+          console.error("멤버 정보 업데이트 중 오류 발생:", error);
+        });
+    }
+
+    // 수정 모달 닫기
+    const closeEditBtn = document.getElementsByClassName("close-edit")[0];
+    closeEditBtn.onclick = function() {
+      document.getElementById('editModal').style.display = "none";
+    }
+
+    function loadEditFile(input) {
+      let file = input.files[0];
+      let newImage = document.createElement("img");
+      newImage.src = URL.createObjectURL(file);
+      newImage.style.width = "100%";
+      newImage.style.height = "100%";
+      newImage.style.objectFit = "cover";
+      newImage.style.borderRadius = "25px";
+
+      let container = document.getElementById('edit_imagebox');
+      container.innerHTML = ''; // 기존 이미지 제거
+      container.appendChild(newImage);
+    }
   </script>
 
 </body>
