@@ -1,4 +1,10 @@
-.navbar{
+* {
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -7,25 +13,26 @@
   color: white;
 }
 
-.left{
+.left {
   display: flex;
   align-items: center;
 }
-.logo{
+
+.logo {
   width: 40px;
   height: 40px;
   margin-left: 50px;
   margin-right: 10px;
 }
-.team{
+
+.team {
   font-size: 20px;
   font-weight: bold;
   padding-left: 20px;
   color: black;
 }
-.right >button{
-  background-color: black;
-  color: black;
+
+.right>button {
 
   padding: 10px 15px;
   margin-left: 10px;
@@ -34,9 +41,138 @@
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
-.right >button:hover{
+
+.right>button:hover {
   background-color: burlywood;
 }
-.img1{
-  size:10px;
+
+.img1 {
+  size: 10px;
+}
+
+.main {
+  width: 75%;
+  height: 100%;
+  margin: 50px auto 0 auto;
+  padding-top: 50px;
+  border-radius: 25px;
+  border: 5px solid #494646;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  animation: animateBorderShadow 3s infinite;
+  /* 애니메이션 반복 */
+}
+
+.main:hover {
+  cursor: pointer;
+}
+
+#main_img {
+  display: inline-block;
+  width: 60%;
+  border-radius: 25px;
+  margin: 0 0 25px 25px;
+}
+
+.main_contents {
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  margin-left: 4%;
+}
+
+.main_contents p {
+  text-align: center;
+  height: 30%;
+  font-size: 30px;
+  border-bottom: 3px dotted #494646;
+  margin-bottom: 10px;
+
+}
+
+.enroll {
+  position: fixed;
+  display: none;
+  background-color: white;
+  top: 0;
+  left: 50%;
+  z-index: 1001;
+  transform: translate(-50%, 0);
+  width: 400px;
+  height: 680px;
+  margin: 100px auto 0 auto;
+  border: 3px solid black;
+  border-radius: 25px;
+}
+
+.info {
+  margin: 20px;
+}
+
+.info input {
+  float: right;
+}
+
+.info input[type="radio"] {
+  float: none;
+}
+
+.info input[type="text"] {
+  border-radius: 25px;
+}
+
+.info_radio {
+  float: right;
+}
+
+.info input[type="file"] {
+  margin-top: 10px;
+  float: none;
+}
+
+.info:last-of-type {
+  margin: 0;
+}
+
+.input_btn {
+  width: 60px;
+  height: 30px;
+  float: right;
+  margin-right: 15px;
+  border-radius: 25px;
+  background-color: #5882FA;
+  color: white;
+  border: none;
+}
+#imagebox {
+  height: 250px;
+  border: 2px solid gray;
+  border-radius: 25px;
+}
+.overlay{
+  /* 오버레이 스타일 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  background: rgba(0, 0, 0, 0.5); /* 반투명한 검정 배경 */
+  z-index: 1000; /* 앞에 나오도록 설정 */
+  /* display: none; 기본적으로 숨김 */
+}
+
+@keyframes animateBorderShadow {
+  0% {
+    border-color: transparent;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  50% {
+    border-color: #9F81F7;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  100% {
+    border-color: transparent;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
 }
