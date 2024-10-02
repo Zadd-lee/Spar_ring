@@ -86,10 +86,13 @@
   height: 30%;
   font-size: 30px;
   border-bottom: 3px dotted #494646;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 
 }
-
+.main_contents span{
+    font-size: 20px;
+}
 .enroll {
   position: fixed;
   display: none;
@@ -221,3 +224,10 @@
 .team-h1{
   color: white;
 }
+#mbti_input{
+  float: right;
+  border-radius: 25px;
+  border: 2px solid black;
+  height: 30px;
+}
+
